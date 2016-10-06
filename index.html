@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>File Upload Demo</title>
+    <link rel="stylesheet" href="css/bootstrap-combined.min.css" />
+    <style type="text/css">
+      .container{
+        width: 800px;
+        margin: 0 auto;
+      }
+      .progress{
+        font-family: 'Open Sans','Helvetica Neue',Helvetica,Arial,sans-serif !important;
+        background-color: #e6e9ed;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        overflow: hidden;
+        height: 20px;
+        margin-top: 40px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+      }
+      .progress-bar{
+        background-color: #3bafda;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;float: left;
+        width: 0;
+        height: 100%;
+        font-size: 12px;
+        line-height: 20px;
+        color: #fff;
+        text-align: center;
+        -webkit-transition: width .6s ease;
+        transition: width .6s ease;
+        padding: 5px 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="progress">
+        <div class="progress-bar" style="width: 0%;">0%</div>
+      </div>
+      <a href="javacript:;" id="pick-video" class="btn btn-primary">Pick File</a>
+      <a href="javacript:;" id="pause-upload" class="btn btn-danger">Pause</a>
+      <a href="#" id="view-link" class="btn btn-success" target="_blank" style="display: none">View File</a>
+    </div>
+  </body>
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript" src="js/moxie.js"></script>
+  <script type="text/javascript">
+      mOxie.Env.swf_url = 'js/Moxie.swf';
+  </script>
+  <script type="text/javascript" src="js/uploader.js"></script>
+  <script>
+    var opts = {
+      endpoint: "/upload.php",
+      uploadId: 0,
+      browseButton: "pick-video",
+      fail: function(msg){
+        alert(msg);
+      },
+      progress: function(prc){
+        $('.progress .progress-bar').css('width', prc + '%').text(prc + "%");
+      },
+      done: function(e){
+        alert("Done uploading");
+        console.log(e);
+        $('#view-link').attr('href', window.uploader.filePath).show();
+      },
+      runtime: "html5,flash",
+      acceptedMimes: "video,image,application"
+    };
+    var uploader = new Uploader(opts);
+
+    $(function(){
+      $('#pause-upload').on('click', function(){
+        if ($(this).text() == 'Pause'){
+          $(this).text('Resume');
+          window.uploader.stopUpload();
+        } else{
+          $(this).text('Pause');
+          window.uploader.start();
+        }
+      });
+    });
+  </script>
+</html>
