@@ -12,7 +12,7 @@ class FileUpload {
         $this->uploadId = $uploadId;
         $this->uploadPath = $uploadPath;
 
-        if ($this->uploadId != 0){
+        if (!is_numeric($this->uploadId) && strlen($this->uploadId)){
             $this->sumKey = $this->uploadId;
             $this->preUpload();
         }

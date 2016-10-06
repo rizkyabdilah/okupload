@@ -50,7 +50,6 @@ var Uploader = (function(){
         
         self.masterPath = null;
         self.uploadId = null;
-        self.uploadPath = self.settings.endpoint + "?uploadId=" + self.settings.uploadId;
         
         var acceptedMimes = [];
         var mimes = self.settings.acceptedMimes.split(",");
@@ -66,6 +65,7 @@ var Uploader = (function(){
         });
 
         fileInput.onchange = function(e) {
+            self.uploadId = 0;
             self.parseFiles(e.target.files);
             if (self._validFile()) {
                 self.beforeUpload();
@@ -91,6 +91,10 @@ var Uploader = (function(){
         return false;
     };
     
+    Uploader.prototype.getUploadPath = function(args){
+        return self.settings.endpoint + "?uploadId=" + self.uploadId + "&" + args.join("&");
+    }
+
     Uploader.prototype.parseFiles = function(files){
         var self = this;
         self.file = files[0];
@@ -109,10 +113,6 @@ var Uploader = (function(){
     
     Uploader.prototype._removeHtml = function(txt){
         return txt.replace(/<(?:.|\n)*?>/gm, '');
-    };
-    
-    Uploader.prototype.getUploadPath = function(args){
-        return this.uploadPath + "&" + args.join("&");
     };
     
     Uploader.prototype.log = function(msg){
@@ -141,7 +141,6 @@ var Uploader = (function(){
         var _postCallback = function(xhr){
             self.filePath = xhr.resp.file_path;
             self.uploadId = xhr.resp.upload_id;
-            self.uploadPath = self.settings.endpoint + "?uploadId=" + self.uploadId;
             self.bytesWritten = parseInt(xhr.resp.bytes_written);
             self.updateProgress();
             
