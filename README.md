@@ -48,6 +48,12 @@ This library is created based on and inspired by multiple project:
  * [tus.io](http://tus.io/)
  * [Resumable.js](http://www.resumablejs.com/)
 
+## Limitation
+
+While technically there is no limit in file size when uploading file, there is a limitation
+when using flash as file reader (_non HTML5_), its either available RAM on the computer
+or 200Mb, forgot the referrence, will add later.
+
 ## License
 
 While I want this library released in MIT style, this library is included with mOxie library
